@@ -1,0 +1,15 @@
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('https://images.pexels.com/photos/3116408/pexels-photo-3116408.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');
+    width: 100vw;
+    height: 50vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    flex-direction: column;
+}
+
+.search-error {
+    color: rgba(255, 51, 51, .8);
+}
