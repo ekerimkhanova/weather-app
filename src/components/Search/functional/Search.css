@@ -16,6 +16,6 @@
 
 @media(max-width: 500px) {
     .search-wrapper {
-        height: 40vh;
+        height: 30vh;
     }
 }
