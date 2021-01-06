@@ -8,7 +8,7 @@ export const API_DEFAULT_PARAMS = {
 }
 
 export const API = axios.create({
-  baseURL: "http://api.weatherbit.io/v2.0/forecast/daily",
+  baseURL: "https://api.weatherbit.io/v2.0/forecast/daily",
   headers: {
     "Content-Type": "application/json",
   }
