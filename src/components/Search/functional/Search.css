@@ -13,3 +13,9 @@
 .search-error {
     color: rgba(255, 51, 51, .8);
 }
+
+@media(max-width: 500px) {
+    .search-wrapper {
+        height: 40vh;
+    }
+}
