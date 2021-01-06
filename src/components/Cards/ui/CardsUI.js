@@ -26,7 +26,7 @@ const CardsUI = ({ city, cards }) => {
     <div>
       <div className='cards-city'>{city}</div>
       <Carousel
-        swipeable={false}
+        swipeable={true}
         draggable={true}
         showDots={false}
         responsive={responsive}
