@@ -1,45 +1,32 @@
-import React from 'react';
-import withFormateData from '../../../functions/hoc/withFormateData';
-import CardUI from '../Card/CardUI';
+import React, { useMemo } from 'react';
+import CardUI from '../ui/CardUI';
 import CardsUI from "../ui/CardsUI";
-import { makeStyles } from "@material-ui/core/styles";
 import './Cards.css';
+import useFormateData from '../../../hooks/useFormateData';
+import { useCardsStyles } from '../../../styles/useCardsStyles';
+import { GET_WEATHER_ICONS_LINK } from '../../../constans/constans';
 
-const useStyles = makeStyles((theme) => ({
-    title: {
-        fontSize: 14
-    },
+const CardsContainer = ({ data, city , setData, isLoading}) => {
 
-    contentCard: {
-        "&:last-child": {
-            padding: 16
-        },
-        textAlign: "center",
-    },
-    card: {
-        borderRadius: 0,
-    }
-}));
+    const classes = useCardsStyles();
 
-const CardsContainer = ({ data, city, formateData }) => {
+    const newData = useFormateData(data, setData);
 
-    const classes = useStyles();
+    const cards = useMemo(()=>{
+        return newData.map( el => <CardUI
+            key={el.datetime}
+            temp={el.temp}
+            date={el.datetime}
+            description={el.weather.description}
+            icon={GET_WEATHER_ICONS_LINK + `${el.weather.icon}.png`}
+            pres={el.pres}
+            humidity={el.rh}
+            clouds={el.clouds}
+            wind={el.wind_spd}
+            classes={classes} />)
+    }, [newData, classes]) 
 
-    const newData = formateData(data);
-
-    const cards = newData.map((el, i) => <CardUI
-        key={i}
-        temp={el.temp}
-        date={el.datetime}
-        description={el.weather.description}
-        icon={`https://www.weatherbit.io/static/img/icons/${el.weather.icon}.png`}
-        pres={el.pres}
-        humidity={el.rh}
-        clouds={el.clouds}
-        wind={el.wind_spd}
-        classes={classes} />)
-
-    return <CardsUI city={city} cards={cards} />
+    return <CardsUI city={city} cards={cards} isLoading={isLoading} />
 }
 
-export default withFormateData(CardsContainer);
+export default CardsContainer;

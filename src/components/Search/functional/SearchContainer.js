@@ -1,80 +1,74 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchUI from "../ui/SearchUI";
-import { API, API_DEFAULT_PARAMS } from "../../../api/api";
+import { API } from "../../../api/api";
 import "./Search.css";
-import { makeStyles } from "@material-ui/core/styles";
+import { useSearchStyles } from "../../../styles/useSearchStyles";
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        [theme.breakpoints.down("sm")]: {
-            width: 270
-        },
-        display: "flex",
-        alignItems: "center",
-        width: 500
-    },
-    input: {
-        marginLeft: theme.spacing(1),
-        flex: 1
-    },
-    iconButton: {
-        padding: 10,
-        "&:hover": {
-            borderRadius: 0
-        },
-        borderRadius: 0,
-    }
-}));
+const SearchContainer = ({ setData, setCity, setIsLoading }) => {
 
-const SearchContainer = ({ setData, setCity }) => {
-
-    const classes = useStyles();
+    const classes = useSearchStyles();
 
     const [searchInput, setSearchInput] = useState('');
     const [showError, setShowError] = useState(false);
+    const [fullScreen, setFullScreen] = useState(true);
 
-    const handleChange = (e) => {
-        setSearchInput(e.target.value);
-    };
-
-    const handleSubmit = () => {
-        setShowError(false);
-        setData(null);
-
-        if (searchInput === '') {
-            setShowError(true);
-            setSearchInput('');
-            setData(null)
-        }
-        else {
-            API.get('/', {
-                params: {
-                    ...API_DEFAULT_PARAMS,
-                    city: searchInput
+    const fetchData = async () => {
+        setIsLoading(true);
+        await API.get('/', {
+            params: {
+                city: searchInput
+            }
+        })
+            .then( res => {
+                setIsLoading(false);
+                if (res.status === 204) {
+                    setShowError(true);
+                    setFullScreen(true);
                 }
-            })
-                .then((res) => {
-                    if (res.status === 204) {
-                        setShowError(true);
-                        setSearchInput('');
-                        setData(null);
-                    }
+                else{
+                    setFullScreen(false);
                     setCity(res.data.city_name);
                     setData(res.data.data);
                     setSearchInput('');
-                })
-                .catch((er) => {
-                    console.error('error', er);
-                })
+                }
+            })
+            .catch( er => {
+                console.error('error', er);
+            })
+    };
+
+    const handleChange = e => {
+        setSearchInput(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (searchInput === '') {
+            setFullScreen(true);
+            setShowError(true);
+            setSearchInput('');
+            setData(undefined)
+        }
+        else {
+            setShowError(false);
+            setData(undefined);
+            fetchData();
         }
     };
 
+    useEffect(() => {
+        return () => {
+            fetchData();
+        }
+    }, []);
+    
     return <SearchUI
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         searchInput={searchInput}
         showError={showError}
-        classes={classes} />;
+        classes={classes} 
+        fullScreen = {fullScreen}/>;
 }
 
 export default SearchContainer;

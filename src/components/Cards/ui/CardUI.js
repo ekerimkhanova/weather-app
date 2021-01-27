@@ -3,10 +3,12 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 
-const CardUI = ({ temp, date, icon, pres, humidity, clouds, wind, classes }) => {
+const CardUI = ({ temp, date, icon, pres, humidity, clouds, wind, classes, isLoading }) => {
 
+    if(isLoading === true){
+        return <p>Loading...</p>;
+    }
     return (
-
         <Card className={classes.card}>
             <CardContent className={classes.contentCard}>
                 <Typography
@@ -34,7 +36,6 @@ const CardUI = ({ temp, date, icon, pres, humidity, clouds, wind, classes }) => 
                 </Typography>
             </CardContent>
         </Card>
-
     )
 }
 

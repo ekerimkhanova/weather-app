@@ -4,14 +4,15 @@ import SearchContainer from "./components/Search/functional/SearchContainer";
 
 const App = () => {
 
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(undefined);
   const [city, setCity] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <div>
-      <SearchContainer setData={setData} setCity={setCity} />
-      {(data !== null && data !== undefined) && <CardsContainer data={data} city={city} />}
-    </div>
+    <>
+      <SearchContainer setData={setData} setCity={setCity} setIsLoading={setIsLoading} />
+      {data && <CardsContainer data={data} city={city}  setData={setData} isLoading={isLoading}/>}
+    </>
   );
 }
 
