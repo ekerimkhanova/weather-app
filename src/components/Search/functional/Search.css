@@ -42,9 +42,13 @@ input:focus:-ms-input-placeholder {
 @media(max-width: 500px) {
     .search-wrapper {
         height: 30vh;
+        justify-content: center;
     }
     .search-title{
-        margin: 0;
+        margin: -35vh 0 10vh;
+    }
+    .search-wrapper:not(.fullscreen){
+        justify-content: space-evenly;
     }
 }
 
