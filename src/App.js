@@ -11,7 +11,7 @@ const App = () => {
   return (
     <>
       <SearchContainer setData={setData} setCity={setCity} setIsLoading={setIsLoading} />
-      {data && <CardsContainer data={data} city={city}  setData={setData} isLoading={isLoading}/>}
+      {data && <CardsContainer data={data} city={city} isLoading={isLoading}/>}
     </>
   );
 }

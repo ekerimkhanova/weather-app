@@ -3,6 +3,8 @@ import SearchUI from "../ui/SearchUI";
 import { API } from "../../../api/api";
 import "./Search.css";
 import { useSearchStyles } from "../../../styles/useSearchStyles";
+import { formateDate, formateNum, formateNumToFixed } from "../../../functions/functions";
+import { PRESSURE_CONST } from "../../../constans/constans";
 
 const SearchContainer = ({ setData, setCity, setIsLoading }) => {
 
@@ -11,31 +13,7 @@ const SearchContainer = ({ setData, setCity, setIsLoading }) => {
     const [searchInput, setSearchInput] = useState('');
     const [showError, setShowError] = useState(false);
     const [fullScreen, setFullScreen] = useState(true);
-
-    const fetchData = async () => {
-        setIsLoading(true);
-        await API.get('/', {
-            params: {
-                city: searchInput
-            }
-        })
-            .then( res => {
-                setIsLoading(false);
-                if (res.status === 204) {
-                    setShowError(true);
-                    setFullScreen(true);
-                }
-                else{
-                    setFullScreen(false);
-                    setCity(res.data.city_name);
-                    setData(res.data.data);
-                    setSearchInput('');
-                }
-            })
-            .catch( er => {
-                console.error('error', er);
-            })
-    };
+    const [query, setQuery] = useState('');
 
     const handleChange = e => {
         setSearchInput(e.target.value);
@@ -47,20 +25,54 @@ const SearchContainer = ({ setData, setCity, setIsLoading }) => {
             setFullScreen(true);
             setShowError(true);
             setSearchInput('');
-            setData(undefined)
         }
         else {
             setShowError(false);
-            setData(undefined);
-            fetchData();
+            setQuery(searchInput);
         }
     };
 
     useEffect(() => {
-        return () => {
-            fetchData();
+        let didCancel = false; // abort data fetching 
+
+        const fetchData = async () => {
+            setIsLoading(true);
+            try {
+                const result = await API.get('/', {
+                    params: {
+                        city: query
+                    }
+                })
+                if(!didCancel){
+                    if (result.status === 204) {
+                        setShowError(true);
+                        setFullScreen(true);
+                    }
+                    else{
+                        setFullScreen(false);
+                        setCity(result.data.city_name);
+                        setData(result.data.data.map(el => {
+                            return {
+                              ...el,
+                              temp: formateNum(el.temp),
+                              datetime: formateDate(el.datetime),
+                              pres: formateNum(el.pres / PRESSURE_CONST),
+                              wind_spd: formateNumToFixed(el.wind_spd)
+                            }
+                          }));
+                        setSearchInput('');
+                    }
+                }
+                setIsLoading(false);
+            } catch (er) {console.error('error', er);} 
+            setIsLoading(false);
         }
-    }, []);
+        query && fetchData(); 
+        
+        return () => {
+            didCancel = true; 
+        }
+    }, [query]);
     
     return <SearchUI
         handleChange={handleChange}
