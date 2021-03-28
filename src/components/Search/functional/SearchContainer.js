@@ -25,6 +25,7 @@ const SearchContainer = ({ setData, setCity, setIsLoading }) => {
             setFullScreen(true);
             setShowError(true);
             setSearchInput('');
+            setData(undefined);
         }
         else {
             setShowError(false);
