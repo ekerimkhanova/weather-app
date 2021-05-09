@@ -1,4 +1,4 @@
-# The application shows the weather forecast for the next 16 days: https://ekerimkhanova.github.io/todo-app/
+# The application shows the weather forecast for the next 16 days: https://ekerimkhanova.github.io/weather-app/
 ### Technology stack: React, CSS Modules
 ### Libraries: "react-multi-carousel", "@material-ui/core", "axios"
 
