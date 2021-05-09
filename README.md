@@ -1,6 +1,6 @@
 # The application shows the weather forecast for the next 16 days: https://ekerimkhanova.github.io/todo-app/
-### Technology stack: React, Redux, CSS Modules
-### Libraries: "react-redux", "react-modal", "react-icons"
+### Technology stack: React, CSS Modules
+### Libraries: "react-multi-carousel", "@material-ui/core", "axios"
 
 # Getting Started with Create React App
 
