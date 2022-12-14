@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    background-image: url('https://images.pexels.com/photos/3116408/pexels-photo-3116408.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');
+    background-image: url('../../../images/main.jpg');
     width: 100%;
     height: 50vh;
     background-position: center;
